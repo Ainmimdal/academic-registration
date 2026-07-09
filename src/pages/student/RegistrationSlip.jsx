@@ -89,6 +89,7 @@ function RegistrationSlip() {
                   <th className="p-2 border-r border-gray-400 w-12 text-center">No.</th>
                   <th className="p-2 border-r border-gray-400 w-32">Course Code</th>
                   <th className="p-2 border-r border-gray-400">Course Name</th>
+                  <th className="p-2 border-r border-gray-400 w-28">Group</th>
                   <th className="p-2 w-20 text-center">Credit</th>
                 </tr>
               </thead>
@@ -99,12 +100,13 @@ function RegistrationSlip() {
                       <td className="p-2 border-r border-gray-400 text-center">{index + 1}</td>
                       <td className="p-2 border-r border-gray-400 font-semibold">{course.code}</td>
                       <td className="p-2 border-r border-gray-400 uppercase">{course.name}</td>
+                      <td className="p-2 border-r border-gray-400">{course.selectedGroup?.label || '-'}</td>
                       <td className="p-2 text-center">{course.credits}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="p-6 text-center italic text-gray-500 border-t border-gray-400">
+                    <td colSpan="5" className="p-6 text-center italic text-gray-500 border-t border-gray-400">
                       No courses registered.
                     </td>
                   </tr>
@@ -112,7 +114,7 @@ function RegistrationSlip() {
               </tbody>
               <tfoot>
                 <tr className="border-t-2 border-black bg-gray-50">
-                  <td colSpan="3" className="p-2 text-right font-bold border-r border-gray-400">Total Credit Hour</td>
+                  <td colSpan="4" className="p-2 text-right font-bold border-r border-gray-400">Total Credit Hour</td>
                   <td className="p-2 text-center font-bold text-lg">{totalCredits}</td>
                 </tr>
               </tfoot>

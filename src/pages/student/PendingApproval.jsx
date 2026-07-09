@@ -7,7 +7,7 @@ import SecondaryButton from '../../components/common/SecondaryButton';
 import { useApp } from '../../context/AppContext';
 
 function PendingApproval() {
-  const { registrationPhase } = useApp();
+  const { registrationPhase, selectedCourseObjects } = useApp();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +69,27 @@ function PendingApproval() {
           <div className="mb-8">
             <StatusBadge status={registrationPhase} />
           </div>
+
+          {selectedCourseObjects.length > 0 && (
+            <div className="mb-8 rounded-xl border border-gray-200 bg-gray-50 text-left overflow-hidden">
+              <div className="border-b border-gray-200 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">Registered Courses</p>
+              </div>
+              <div className="divide-y divide-gray-200">
+                {selectedCourseObjects.map((course) => (
+                  <div key={course.id} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-800">{course.code} - {course.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {course.selectedGroup?.label} | {course.day} {course.startTime}-{course.endTime}
+                      </p>
+                    </div>
+                    <StatusBadge status={registrationPhase} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <SecondaryButton onClick={() => navigate('/student/dashboard')}>
             Back to Dashboard

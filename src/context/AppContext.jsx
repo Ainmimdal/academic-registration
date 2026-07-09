@@ -10,6 +10,7 @@ const ACTIONS = {
   LOGOUT: 'LOGOUT',
   ADD_COURSE: 'ADD_COURSE',
   REMOVE_COURSE: 'REMOVE_COURSE',
+  CHANGE_COURSE_GROUP: 'CHANGE_COURSE_GROUP',
   CLEAR_SELECTED: 'CLEAR_SELECTED',
   SUBMIT_REGISTRATION: 'SUBMIT_REGISTRATION',
   APPROVE_REGISTRATION: 'APPROVE_REGISTRATION',
@@ -25,11 +26,27 @@ const initialState = {
   user: null,
   courses: JSON.parse(JSON.stringify(initialCourses)),
   selectedCourses: [],
+  selectedCourseGroups: {},
   registrationPhase: 'draft', // draft -> pending -> approved | rejected
   toasts: [],
   pendingStudents: JSON.parse(JSON.stringify(initialPendingStudents)),
   toastIdCounter: 0,
 };
+
+function updateCourseSeat(course, groupId, delta) {
+  const groups = course.classGroups || [];
+  const targetGroupId = groupId || groups[0]?.id;
+
+  return {
+    ...course,
+    availableSeats: Math.max(0, course.availableSeats + delta),
+    classGroups: groups.map((group) =>
+      group.id === targetGroupId
+        ? { ...group, availableSeats: Math.max(0, group.availableSeats + delta) }
+        : group
+    ),
+  };
+}
 
 function appReducer(state, action) {
   switch (action.type) {
@@ -57,36 +74,66 @@ function appReducer(state, action) {
         ...state,
         user: null,
         selectedCourses: [],
+        selectedCourseGroups: {},
         registrationPhase: 'draft',
       };
 
     case ACTIONS.ADD_COURSE: {
-      const courseId = action.payload;
+      const { courseId, groupId } = action.payload;
       if (state.selectedCourses.includes(courseId)) return state;
       
       const updatedCourses = state.courses.map((c) =>
-        c.id === courseId ? { ...c, availableSeats: Math.max(0, c.availableSeats - 1) } : c
+        c.id === courseId ? updateCourseSeat(c, groupId, -1) : c
       );
 
       return {
         ...state,
         courses: updatedCourses,
         selectedCourses: [...state.selectedCourses, courseId],
+        selectedCourseGroups: {
+          ...state.selectedCourseGroups,
+          [courseId]: groupId,
+        },
       };
     }
 
     case ACTIONS.REMOVE_COURSE: {
       const courseId = action.payload;
       if (!state.selectedCourses.includes(courseId)) return state;
+      const selectedGroupId = state.selectedCourseGroups[courseId];
 
       const updatedCourses = state.courses.map((c) =>
-        c.id === courseId ? { ...c, availableSeats: c.availableSeats + 1 } : c
+        c.id === courseId ? updateCourseSeat(c, selectedGroupId, 1) : c
       );
+      const { [courseId]: removedGroup, ...remainingGroups } = state.selectedCourseGroups;
 
       return {
         ...state,
         courses: updatedCourses,
         selectedCourses: state.selectedCourses.filter((id) => id !== courseId),
+        selectedCourseGroups: remainingGroups,
+      };
+    }
+
+    case ACTIONS.CHANGE_COURSE_GROUP: {
+      const { courseId, groupId } = action.payload;
+      if (!state.selectedCourses.includes(courseId)) return state;
+
+      const currentGroupId = state.selectedCourseGroups[courseId];
+      if (currentGroupId === groupId) return state;
+
+      const updatedCourses = state.courses.map((course) => {
+        if (course.id !== courseId) return course;
+        return updateCourseSeat(updateCourseSeat(course, currentGroupId, 1), groupId, -1);
+      });
+
+      return {
+        ...state,
+        courses: updatedCourses,
+        selectedCourseGroups: {
+          ...state.selectedCourseGroups,
+          [courseId]: groupId,
+        },
       };
     }
 
@@ -100,15 +147,36 @@ function appReducer(state, action) {
         ...state,
         courses: restoredCourses,
         selectedCourses: [],
+        selectedCourseGroups: {},
         registrationPhase: 'draft',
       };
     }
 
-    case ACTIONS.SUBMIT_REGISTRATION:
+    case ACTIONS.SUBMIT_REGISTRATION: {
+      const requestedCourses = state.selectedCourses.map((courseId) => {
+        const course = state.courses.find((item) => item.id === courseId);
+        const group = course?.classGroups?.find((item) => item.id === state.selectedCourseGroups[courseId]);
+        return group ? `${course.code} (${group.label})` : course?.code;
+      }).filter(Boolean);
+
+      const updatedStudents = state.pendingStudents.map((student) =>
+        student.studentId === studentProfile.id
+          ? {
+              ...student,
+              coursesRequested: requestedCourses,
+              totalCredits: calculateTotalCredits(state.selectedCourses.map((courseId) => state.courses.find((course) => course.id === courseId)).filter(Boolean)),
+              submittedAt: new Date().toISOString(),
+              status: 'pending',
+            }
+          : student
+      );
+
       return {
         ...state,
         registrationPhase: 'pending',
+        pendingStudents: updatedStudents,
       };
+    }
 
     case ACTIONS.APPROVE_REGISTRATION:
       return {
@@ -126,6 +194,7 @@ function appReducer(state, action) {
       return {
         ...state,
         selectedCourses: [],
+        selectedCourseGroups: {},
         registrationPhase: 'draft',
       };
 
@@ -193,12 +262,16 @@ export function AppProvider({ children }) {
     dispatch({ type: ACTIONS.LOGOUT });
   }, []);
 
-  const addCourse = useCallback((courseId) => {
-    dispatch({ type: ACTIONS.ADD_COURSE, payload: courseId });
+  const addCourse = useCallback((courseId, groupId) => {
+    dispatch({ type: ACTIONS.ADD_COURSE, payload: { courseId, groupId } });
   }, []);
 
   const removeCourse = useCallback((courseId) => {
     dispatch({ type: ACTIONS.REMOVE_COURSE, payload: courseId });
+  }, []);
+
+  const changeCourseGroup = useCallback((courseId, groupId) => {
+    dispatch({ type: ACTIONS.CHANGE_COURSE_GROUP, payload: { courseId, groupId } });
   }, []);
 
   const clearSelectedCourses = useCallback(() => {
@@ -243,8 +316,24 @@ export function AppProvider({ children }) {
 
   // Computed values
   const selectedCourseObjects = useMemo(() => {
-    return state.selectedCourses.map((id) => state.courses.find((c) => c.id === id)).filter(Boolean);
-  }, [state.selectedCourses, state.courses]);
+    return state.selectedCourses.map((id) => {
+      const course = state.courses.find((c) => c.id === id);
+      if (!course) return null;
+
+      const selectedGroupId = state.selectedCourseGroups[id] || course.classGroups?.[0]?.id;
+      const selectedGroup = course.classGroups?.find((group) => group.id === selectedGroupId);
+
+      return {
+        ...course,
+        selectedGroup,
+        selectedGroupId,
+        day: selectedGroup?.day || course.day,
+        startTime: selectedGroup?.startTime || course.startTime,
+        endTime: selectedGroup?.endTime || course.endTime,
+        venue: selectedGroup?.venue || course.venue,
+      };
+    }).filter(Boolean);
+  }, [state.selectedCourses, state.selectedCourseGroups, state.courses]);
 
   const totalCredits = useMemo(() => {
     return calculateTotalCredits(selectedCourseObjects);
@@ -312,6 +401,7 @@ export function AppProvider({ children }) {
     logout,
     addCourse,
     removeCourse,
+    changeCourseGroup,
     clearSelectedCourses,
     submitRegistration,
     approveRegistration,
@@ -322,7 +412,7 @@ export function AppProvider({ children }) {
     showToast,
     dismissToast,
   }), [state, selectedCourseObjects, totalCredits, validationResults, allValidationsPassed,
-    login, logout, addCourse, removeCourse, clearSelectedCourses,
+    login, logout, addCourse, removeCourse, changeCourseGroup, clearSelectedCourses,
     submitRegistration, approveRegistration, rejectRegistration, resetRegistration,
     approveStudent, rejectStudent, showToast, dismissToast]);
 

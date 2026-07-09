@@ -9,8 +9,8 @@ function CourseRegistration() {
   const { courses, selectedCourses, addCourse } = useApp();
   const navigate = useNavigate();
 
-  const handleRegister = (courseId) => {
-    addCourse(courseId);
+  const handleRegister = (courseId, groupId) => {
+    addCourse(courseId, groupId);
   };
 
   const handleViewDetails = (courseId) => {

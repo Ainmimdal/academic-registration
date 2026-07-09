@@ -30,6 +30,10 @@ export const courseCatalog = [
     startTime: '08:00',
     endTime: '10:00',
     venue: 'DK1-02',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Monday', startTime: '08:00', endTime: '10:00', venue: 'DK1-02', availableSeats: 12, totalSeats: 20 },
+      { id: 'CS230-6B', label: 'CS230 6B', day: 'Wednesday', startTime: '08:00', endTime: '10:00', venue: 'MK2-04', availableSeats: 8, totalSeats: 20 },
+    ],
     description: 'This course covers the fundamentals of database management systems including relational model, SQL, normalization, and database design.',
   },
   {
@@ -45,6 +49,10 @@ export const courseCatalog = [
     startTime: '10:00',
     endTime: '12:00',
     venue: 'DK1-03',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Tuesday', startTime: '10:00', endTime: '12:00', venue: 'DK1-03', availableSeats: 9, totalSeats: 15 },
+      { id: 'CS230-6C', label: 'CS230 6C', day: 'Thursday', startTime: '10:00', endTime: '12:00', venue: 'MK1-01', availableSeats: 6, totalSeats: 15 },
+    ],
     description: 'This course introduces the concepts and techniques of systems analysis and design. Students will learn structured and object-oriented methodologies.',
   },
   {
@@ -60,6 +68,10 @@ export const courseCatalog = [
     startTime: '14:00',
     endTime: '16:00',
     venue: 'DK2-01',
+    classGroups: [
+      { id: 'LAW-6A', label: 'LAW 6A', day: 'Wednesday', startTime: '14:00', endTime: '16:00', venue: 'DK2-01', availableSeats: 10, totalSeats: 25 },
+      { id: 'LAW-6B', label: 'LAW 6B', day: 'Friday', startTime: '14:00', endTime: '16:00', venue: 'DK2-05', availableSeats: 8, totalSeats: 25 },
+    ],
     description: 'An introduction to the Malaysian legal system as it applies to business. Topics include contract law, sale of goods, and intellectual property.',
   },
   {
@@ -75,6 +87,10 @@ export const courseCatalog = [
     startTime: '08:00',
     endTime: '10:00',
     venue: 'DK1-04',
+    classGroups: [
+      { id: 'MGT-6A', label: 'MGT 6A', day: 'Thursday', startTime: '08:00', endTime: '10:00', venue: 'DK1-04', availableSeats: 7, totalSeats: 20 },
+      { id: 'MGT-6B', label: 'MGT 6B', day: 'Monday', startTime: '10:00', endTime: '12:00', venue: 'DK1-08', availableSeats: 5, totalSeats: 25 },
+    ],
     description: 'Explores the fundamental principles of management including planning, organizing, leading, and controlling in organizational settings.',
   },
   {
@@ -90,6 +106,10 @@ export const courseCatalog = [
     startTime: '10:00',
     endTime: '12:00',
     venue: 'DK3-02',
+    classGroups: [
+      { id: 'HRM-6A', label: 'HRM 6A', day: 'Friday', startTime: '10:00', endTime: '12:00', venue: 'DK3-02', availableSeats: 9, totalSeats: 18 },
+      { id: 'HRM-6B', label: 'HRM 6B', day: 'Wednesday', startTime: '16:00', endTime: '18:00', venue: 'DK3-04', availableSeats: 8, totalSeats: 17 },
+    ],
     description: 'Covers the key areas of human resource management including recruitment, training, compensation, and employee relations.',
   },
   {
@@ -105,6 +125,10 @@ export const courseCatalog = [
     startTime: '14:00',
     endTime: '16:00',
     venue: 'DK2-03',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Monday', startTime: '14:00', endTime: '16:00', venue: 'DK2-03', availableSeats: 4, totalSeats: 15 },
+      { id: 'CS230-6B', label: 'CS230 6B', day: 'Thursday', startTime: '12:00', endTime: '14:00', venue: 'AI Lab 1', availableSeats: 4, totalSeats: 15 },
+    ],
     description: 'Introduction to artificial intelligence concepts including search algorithms, knowledge representation, machine learning, and neural networks.',
   },
   {
@@ -120,6 +144,10 @@ export const courseCatalog = [
     startTime: '08:00',
     endTime: '10:00',
     venue: 'DK1-05',
+    classGroups: [
+      { id: 'MAT-6A', label: 'MAT 6A', day: 'Tuesday', startTime: '08:00', endTime: '10:00', venue: 'DK1-05', availableSeats: 0, totalSeats: 20 },
+      { id: 'MAT-6B', label: 'MAT 6B', day: 'Thursday', startTime: '16:00', endTime: '18:00', venue: 'DK1-07', availableSeats: 0, totalSeats: 20 },
+    ],
     description: 'Covers numerical techniques for solving mathematical problems including root finding, interpolation, integration, and differential equations.',
   },
   {
@@ -135,6 +163,10 @@ export const courseCatalog = [
     startTime: '10:00',
     endTime: '12:00',
     venue: 'DK3-01',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Wednesday', startTime: '10:00', endTime: '12:00', venue: 'DK3-01', availableSeats: 12, totalSeats: 18 },
+      { id: 'CS230-6D', label: 'CS230 6D', day: 'Friday', startTime: '08:00', endTime: '10:00', venue: 'Software Lab 2', availableSeats: 10, totalSeats: 17 },
+    ],
     description: 'Comprehensive study of software engineering principles, methodologies, and practices including agile, testing, and project management.',
   },
   {
@@ -150,6 +182,10 @@ export const courseCatalog = [
     startTime: '14:00',
     endTime: '16:00',
     venue: 'DK2-02',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Thursday', startTime: '14:00', endTime: '16:00', venue: 'DK2-02', availableSeats: 7, totalSeats: 15 },
+      { id: 'CS230-6B', label: 'CS230 6B', day: 'Tuesday', startTime: '12:00', endTime: '14:00', venue: 'Network Lab', availableSeats: 7, totalSeats: 15 },
+    ],
     description: 'Study of computer networking fundamentals including OSI model, TCP/IP, routing, network security, and wireless networking.',
   },
   {
@@ -165,6 +201,10 @@ export const courseCatalog = [
     startTime: '08:00',
     endTime: '10:00',
     venue: 'DK1-06',
+    classGroups: [
+      { id: 'ITS-6A', label: 'ITS 6A', day: 'Friday', startTime: '08:00', endTime: '10:00', venue: 'DK1-06', availableSeats: 3, totalSeats: 12 },
+      { id: 'ITS-6B', label: 'ITS 6B', day: 'Wednesday', startTime: '12:00', endTime: '14:00', venue: 'Security Lab', availableSeats: 3, totalSeats: 13 },
+    ],
     description: 'Covers information security principles, cryptography, access control, security policies, and cybersecurity risk management.',
   },
   {
@@ -180,6 +220,10 @@ export const courseCatalog = [
     startTime: '10:00',
     endTime: '12:00',
     venue: 'DK3-03',
+    classGroups: [
+      { id: 'CS230-6A', label: 'CS230 6A', day: 'Monday', startTime: '10:00', endTime: '12:00', venue: 'DK3-03', availableSeats: 5, totalSeats: 12 },
+      { id: 'CS230-6C', label: 'CS230 6C', day: 'Thursday', startTime: '08:00', endTime: '10:00', venue: 'Database Lab', availableSeats: 5, totalSeats: 13 },
+    ],
     description: 'Advanced topics in database systems including distributed databases, NoSQL, data warehousing, and big data technologies.',
   },
   {
@@ -195,6 +239,10 @@ export const courseCatalog = [
     startTime: '14:00',
     endTime: '16:00',
     venue: 'DK4-01',
+    classGroups: [
+      { id: 'CTU-6A', label: 'CTU 6A', day: 'Tuesday', startTime: '14:00', endTime: '16:00', venue: 'DK4-01', availableSeats: 18, totalSeats: 30 },
+      { id: 'CTU-6B', label: 'CTU 6B', day: 'Friday', startTime: '12:00', endTime: '14:00', venue: 'DK4-03', availableSeats: 17, totalSeats: 30 },
+    ],
     description: 'Study of Malaysian civilization, national philosophy, and socio-political development from historical and contemporary perspectives.',
   },
 ];

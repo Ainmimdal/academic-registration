@@ -4,6 +4,7 @@ import StatusBadge from '../common/StatusBadge';
 
 function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGroups, setSelectedGroups] = useState({});
 
   const filteredCourses = courses.filter((course) => {
     const searchLower = searchTerm.toLowerCase();
@@ -46,6 +47,7 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                 <th className="table-header">Code</th>
                 <th className="table-header">Course Name</th>
                 <th className="table-header text-center">Credit</th>
+                <th className="table-header">Group</th>
                 <th className="table-header">Lecturer</th>
                 <th className="table-header text-center">Seats</th>
                 <th className="table-header text-center">Action</th>
@@ -54,14 +56,16 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
             <tbody className="divide-y divide-gray-100">
               {filteredCourses.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="table-cell text-center py-8 text-gray-500">
+                  <td colSpan="7" className="table-cell text-center py-8 text-gray-500">
                     No courses found matching your search.
                   </td>
                 </tr>
               ) : (
                 filteredCourses.map((course) => {
                   const isSelected = selectedCourses.includes(course.id);
-                  const isFull = course.availableSeats === 0;
+                  const selectedGroupId = selectedGroups[course.id] || course.classGroups?.[0]?.id;
+                  const selectedGroup = course.classGroups?.find((group) => group.id === selectedGroupId);
+                  const isFull = !selectedGroup || selectedGroup.availableSeats === 0;
 
                   return (
                     <tr
@@ -72,10 +76,27 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                       <td className="table-cell font-semibold text-uitm-primary">{course.code}</td>
                       <td className="table-cell font-medium text-gray-800">{course.name}</td>
                       <td className="table-cell text-center">{course.credits}</td>
+                      <td className="table-cell" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          className="w-44 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-700 focus:border-uitm-primary focus:outline-none focus:ring-2 focus:ring-uitm-primary/20"
+                          value={selectedGroupId || ''}
+                          disabled={isSelected}
+                          onChange={(e) => setSelectedGroups((current) => ({
+                            ...current,
+                            [course.id]: e.target.value,
+                          }))}
+                        >
+                          {(course.classGroups || []).map((group) => (
+                            <option key={group.id} value={group.id} disabled={group.availableSeats === 0}>
+                              {group.label} - {group.day} {group.startTime} ({group.availableSeats}/{group.totalSeats})
+                            </option>
+                          ))}
+                        </select>
+                      </td>
                       <td className="table-cell text-gray-600">{course.lecturer}</td>
                       <td className="table-cell text-center">
                         <span className={`font-medium ${isFull ? 'text-red-500' : 'text-gray-700'}`}>
-                          {course.availableSeats}/{course.totalSeats}
+                          {selectedGroup ? `${selectedGroup.availableSeats}/${selectedGroup.totalSeats}` : '0/0'}
                         </span>
                       </td>
                       <td className="table-cell text-center" onClick={(e) => e.stopPropagation()}>
@@ -83,7 +104,7 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                           <StatusBadge status="passed" />
                         ) : (
                           <PrimaryButton
-                            onClick={() => onRegister(course.id)}
+                            onClick={() => onRegister(course.id, selectedGroupId)}
                             disabled={isFull}
                             className="py-1.5 px-4 text-xs"
                           >

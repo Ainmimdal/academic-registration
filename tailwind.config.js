@@ -8,13 +8,13 @@ export default {
     extend: {
       colors: {
         uitm: {
-          primary: '#0F4C81',
-          'primary-dark': '#0A3A66',
-          'primary-light': '#1565A8',
-          secondary: '#1CBBB4',
-          accent: '#F59E0B',
-          bg: '#F1F5F9',
-          'bg-dark': '#E2E8F0',
+          primary: '#4B0082',
+          'primary-dark': '#2E004F',
+          'primary-light': '#6A1B9A',
+          secondary: '#B19CD9',
+          accent: '#FDB913',
+          bg: '#F6F0FA',
+          'bg-dark': '#E9DDF3',
           success: '#10B981',
           warning: '#F59E0B',
           danger: '#EF4444',

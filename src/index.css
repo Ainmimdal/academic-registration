@@ -11,7 +11,7 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #F1F5F9;
+  background-color: #F6F0FA;
   color: #1E293B;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -23,7 +23,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: #F6F0FA;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -42,11 +42,11 @@ body {
   }
 
   .uitm-gradient {
-    background: linear-gradient(135deg, #0F4C81 0%, #0A3A66 50%, #1565A8 100%);
+    background: linear-gradient(135deg, #4B0082 0%, #2E004F 55%, #6A1B9A 100%);
   }
 
   .uitm-gradient-light {
-    background: linear-gradient(135deg, #1565A8 0%, #0F4C81 100%);
+    background: linear-gradient(135deg, #6A1B9A 0%, #4B0082 100%);
   }
 
   .page-container {
@@ -96,7 +96,7 @@ body {
   }
 
   .sidebar-item-inactive {
-    @apply sidebar-item text-blue-200 hover:bg-white/10 hover:text-white;
+    @apply sidebar-item text-purple-100 hover:bg-white/10 hover:text-white;
   }
 
   .badge {
