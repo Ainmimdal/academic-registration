@@ -6,7 +6,7 @@ import PrimaryButton from '../../components/common/PrimaryButton';
 import SecondaryButton from '../../components/common/SecondaryButton';
 import StatusBadge from '../../components/common/StatusBadge';
 import { useApp } from '../../context/AppContext';
-import { formatClassGroupLabel } from '../../utils/helpers';
+import { formatClassGroupOptionLabel } from '../../utils/helpers';
 
 function CourseDetails() {
   const { id } = useParams();
@@ -146,7 +146,7 @@ function CourseDetails() {
                       value={group.id}
                       disabled={group.availableSeats === 0 && group.id !== activeGroupId}
                     >
-                      {formatClassGroupLabel(group, user?.profile?.program, selectedSession?.semester)}
+                      {formatClassGroupOptionLabel(group, user?.profile?.program, selectedSession?.semester)}
                     </option>
                   ))}
                 </select>

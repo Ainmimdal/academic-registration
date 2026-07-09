@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import PrimaryButton from '../common/PrimaryButton';
-import { formatClassGroupLabel } from '../../utils/helpers';
+import { formatClassGroupOptionLabel } from '../../utils/helpers';
 
 function CourseSummaryPanel() {
   const {
@@ -88,7 +88,7 @@ function CourseSummaryPanel() {
                         value={group.id}
                         disabled={group.availableSeats === 0 && group.id !== course.selectedGroupId}
                       >
-                        {formatClassGroupLabel(group, user?.profile?.program, selectedSession?.semester)}
+                        {formatClassGroupOptionLabel(group, user?.profile?.program, selectedSession?.semester)}
                       </option>
                     ))}
                   </select>

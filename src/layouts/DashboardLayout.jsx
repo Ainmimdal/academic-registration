@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../context/AppContext';
+import uitmLogo from '../assets/LogoUiTM.png';
 
 function DashboardLayout({ children, pageTitle }) {
   const { user, logout, showToast, academicSessions, selectedSession, setSession } = useApp();
@@ -105,8 +106,8 @@ function DashboardLayout({ children, pageTitle }) {
         <div className="flex flex-col h-full">
           {/* Logo area */}
           <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <span className="text-uitm-primary font-bold text-lg">U</span>
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden p-1">
+              <img src={uitmLogo} alt="UiTM" className="h-full w-full object-contain" />
             </div>
             <div>
               <h1 className="text-white font-bold text-sm leading-tight">UiTM</h1>

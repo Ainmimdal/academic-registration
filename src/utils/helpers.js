@@ -47,6 +47,16 @@ export function formatClassGroupLabel(group, program, semester) {
 }
 
 /**
+ * Format class group for compact dropdown options.
+ */
+export function formatClassGroupOptionLabel(group, program, semester) {
+  const label = formatClassGroupLabel(group, program, semester);
+  if (!group) return label;
+
+  return `${label} - ${group.day} ${group.startTime}-${group.endTime}`;
+}
+
+/**
  * Format 24h time string to 12h format
  */
 export function formatTime(time) {

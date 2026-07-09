@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PrimaryButton from '../common/PrimaryButton';
 import StatusBadge from '../common/StatusBadge';
 import { useApp } from '../../context/AppContext';
-import { formatClassGroupLabel } from '../../utils/helpers';
+import { formatClassGroupOptionLabel } from '../../utils/helpers';
 
 function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }) {
   const { user, selectedSession } = useApp();
@@ -47,12 +47,12 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
           <table className="w-full min-w-[940px] text-left border-collapse">
             <colgroup>
               <col className="w-[10%]" />
-              <col className="w-[22%]" />
+              <col className="w-[21%]" />
               <col className="w-[8%]" />
-              <col className="w-[15%]" />
               <col className="w-[22%]" />
+              <col className="w-[18%]" />
               <col className="w-[8%]" />
-              <col className="w-[15%]" />
+              <col className="w-[13%]" />
             </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
@@ -100,13 +100,12 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                         >
                           {(course.classGroups || []).map((group) => (
                             <option key={group.id} value={group.id} disabled={group.availableSeats === 0}>
-                              {formatClassGroupLabel(group, user?.profile?.program, selectedSession?.semester)}
+                              {formatClassGroupOptionLabel(group, user?.profile?.program, selectedSession?.semester)}
                             </option>
                           ))}
                         </select>
                         {selectedGroup && (
                           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
-                            <span>{selectedGroup.day} {selectedGroup.startTime}-{selectedGroup.endTime}</span>
                             <span>{selectedGroup.venue}</span>
                             <span>{selectedGroup.availableSeats}/{selectedGroup.totalSeats} seats</span>
                           </div>
