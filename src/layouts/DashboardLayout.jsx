@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 
 function DashboardLayout({ children, pageTitle }) {
-  const { user, logout, showToast } = useApp();
+  const { user, logout, showToast, academicSessions, selectedSession, setSession } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,6 +12,14 @@ function DashboardLayout({ children, pageTitle }) {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleSessionChange = (event) => {
+    setSession(event.target.value);
+    showToast('Session changed. Registration draft has been reset for the selected session.', 'info');
+    if (user?.role === 'student') {
+      navigate('/student/dashboard');
+    }
   };
 
   const studentLinks = [
@@ -166,6 +174,22 @@ function DashboardLayout({ children, pageTitle }) {
             <h2 className="text-lg font-semibold text-gray-800">{pageTitle}</h2>
           </div>
           <div className="flex items-center gap-3">
+            {user?.role === 'student' && (
+              <label className="hidden sm:flex items-center gap-2 text-xs font-medium text-gray-500">
+                Session
+                <select
+                  value={selectedSession?.id || 'current'}
+                  onChange={handleSessionChange}
+                  className="max-w-56 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-700 focus:border-uitm-primary focus:outline-none focus:ring-2 focus:ring-uitm-primary/20"
+                >
+                  {academicSessions.map((session) => (
+                    <option key={session.id} value={session.id}>
+                      {session.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <button
               onClick={() => showToast('Feature available in production version.', 'info')}
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors relative"

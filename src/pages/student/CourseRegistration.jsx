@@ -6,7 +6,7 @@ import CourseSummaryPanel from '../../components/specific/CourseSummaryPanel';
 import { useApp } from '../../context/AppContext';
 
 function CourseRegistration() {
-  const { courses, selectedCourses, addCourse } = useApp();
+  const { courses, selectedCourses, selectedSession, addCourse } = useApp();
   const navigate = useNavigate();
 
   const handleRegister = (courseId, groupId) => {
@@ -22,7 +22,10 @@ function CourseRegistration() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-800">Available Courses</h2>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">Available Courses</h2>
+              <p className="text-sm text-gray-500">{selectedSession?.label}</p>
+            </div>
           </div>
           <CourseDataTable
             courses={courses}

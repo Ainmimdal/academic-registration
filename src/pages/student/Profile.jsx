@@ -4,7 +4,7 @@ import DashboardLayout from '../../layouts/DashboardLayout';
 import { useApp } from '../../context/AppContext';
 
 function StudentProfile() {
-  const { user, showToast } = useApp();
+  const { user, selectedSession, showToast } = useApp();
   const profile = user?.profile;
 
   const handleEditProfile = () => {
@@ -66,7 +66,12 @@ function StudentProfile() {
             
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Semester</label>
-              <p className="text-gray-800 font-medium">{profile?.semester}</p>
+              <p className="text-gray-800 font-medium">{selectedSession?.semesterLabel}</p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Academic Session</label>
+              <p className="text-gray-800 font-medium">{selectedSession?.academicSession}</p>
             </div>
             
             <div>

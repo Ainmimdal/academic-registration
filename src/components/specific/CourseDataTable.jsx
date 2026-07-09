@@ -101,7 +101,7 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                       </td>
                       <td className="table-cell text-center" onClick={(e) => e.stopPropagation()}>
                         {isSelected ? (
-                          <StatusBadge status="passed" />
+                          <StatusBadge status="selected" />
                         ) : (
                           <PrimaryButton
                             onClick={() => onRegister(course.id, selectedGroupId)}

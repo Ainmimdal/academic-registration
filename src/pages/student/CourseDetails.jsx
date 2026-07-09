@@ -52,7 +52,7 @@ function CourseDetails() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <span className="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">{course.code}</span>
-                {isSelected && <StatusBadge status="passed" />}
+                {isSelected && <StatusBadge status="selected" />}
               </div>
               <h1 className="text-2xl font-bold text-gray-800">{course.name}</h1>
             </div>

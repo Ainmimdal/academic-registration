@@ -6,8 +6,7 @@ import PrintWrapper from '../../components/common/PrintWrapper';
 import { useApp } from '../../context/AppContext';
 
 function Timetable() {
-  const { selectedCourseObjects, user } = useApp();
-  const semester = user?.profile?.semester || 6;
+  const { selectedCourseObjects, selectedSession, user } = useApp();
 
   return (
     <DashboardLayout pageTitle="Timetable">
@@ -18,7 +17,7 @@ function Timetable() {
         <div className="flex justify-between items-end mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">My Timetable</h1>
-            <p className="text-gray-500">Semester {semester}</p>
+            <p className="text-gray-500">{selectedSession?.semesterLabel} | {selectedSession?.academicSession}</p>
           </div>
         </div>
 
@@ -31,7 +30,8 @@ function Timetable() {
         ) : (
           <PrintWrapper title="Timetable">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-uitm-card-border mb-4 print-only">
-              <h2 className="text-xl font-bold text-center mb-2">My Timetable - Semester {semester}</h2>
+              <h2 className="text-xl font-bold text-center mb-2">My Timetable - {selectedSession?.semesterLabel}</h2>
+              <p className="text-center text-sm text-gray-600 mb-1">Session: {selectedSession?.academicSession}</p>
               <p className="text-center text-sm text-gray-600 mb-4">{user?.profile?.name} ({user?.profile?.id})</p>
             </div>
             <TimetableGrid courses={selectedCourseObjects} />

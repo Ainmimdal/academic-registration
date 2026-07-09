@@ -5,6 +5,10 @@ const statusConfig = {
     label: 'Approved',
     classes: 'bg-green-100 text-green-700',
   },
+  selected: {
+    label: 'Selected',
+    classes: 'bg-purple-100 text-uitm-primary',
+  },
   passed: {
     label: 'Passed',
     classes: 'bg-green-100 text-green-700',
@@ -46,6 +50,8 @@ function StatusBadge({ status }) {
             ? 'bg-yellow-500'
             : config.classes.includes('red')
             ? 'bg-red-500'
+            : config.classes.includes('purple') || config.classes.includes('uitm-primary')
+            ? 'bg-uitm-primary'
             : 'bg-gray-500'
         }`}
       />

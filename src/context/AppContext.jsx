@@ -1,5 +1,12 @@
 import { createContext, useContext, useReducer, useCallback, useMemo } from 'react';
-import { courseCatalog as initialCourses, studentProfile, lecturerProfile, adminProfile, pendingStudents as initialPendingStudents } from '../data/mockData';
+import {
+  academicSessions,
+  courseCatalog as initialCourses,
+  studentProfile,
+  lecturerProfile,
+  adminProfile,
+  pendingStudents as initialPendingStudents,
+} from '../data/mockData';
 import { calculateTotalCredits, checkPrerequisites, checkSeatAvailability } from '../utils/helpers';
 
 const AppContext = createContext(null);
@@ -8,6 +15,7 @@ const AppContext = createContext(null);
 const ACTIONS = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
+  SET_SESSION: 'SET_SESSION',
   ADD_COURSE: 'ADD_COURSE',
   REMOVE_COURSE: 'REMOVE_COURSE',
   CHANGE_COURSE_GROUP: 'CHANGE_COURSE_GROUP',
@@ -24,6 +32,7 @@ const ACTIONS = {
 
 const initialState = {
   user: null,
+  selectedSession: academicSessions[0],
   courses: JSON.parse(JSON.stringify(initialCourses)),
   selectedCourses: [],
   selectedCourseGroups: {},
@@ -51,9 +60,10 @@ function updateCourseSeat(course, groupId, delta) {
 function appReducer(state, action) {
   switch (action.type) {
     case ACTIONS.LOGIN: {
-      const { username } = action.payload;
+      const { username, sessionId } = action.payload;
       let role = 'student';
       let profile = { ...studentProfile };
+      const selectedSession = academicSessions.find((session) => session.id === sessionId) || academicSessions[0];
 
       if (username === 'demo_advisor' || username === 'demo_lecturer') {
         role = 'lecturer';
@@ -65,7 +75,27 @@ function appReducer(state, action) {
 
       return {
         ...state,
-        user: { username, role, profile },
+        selectedSession,
+        user: { username, role, profile: { ...profile, semester: selectedSession.semester } },
+        courses: JSON.parse(JSON.stringify(initialCourses)),
+        selectedCourses: [],
+        selectedCourseGroups: {},
+        registrationPhase: 'draft',
+      };
+    }
+
+    case ACTIONS.SET_SESSION: {
+      const selectedSession = academicSessions.find((session) => session.id === action.payload) || state.selectedSession;
+      return {
+        ...state,
+        selectedSession,
+        user: state.user
+          ? { ...state.user, profile: { ...state.user.profile, semester: selectedSession.semester } }
+          : state.user,
+        courses: JSON.parse(JSON.stringify(initialCourses)),
+        selectedCourses: [],
+        selectedCourseGroups: {},
+        registrationPhase: 'draft',
       };
     }
 
@@ -254,8 +284,12 @@ function appReducer(state, action) {
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  const login = useCallback((username) => {
-    dispatch({ type: ACTIONS.LOGIN, payload: { username } });
+  const login = useCallback((username, sessionId = academicSessions[0].id) => {
+    dispatch({ type: ACTIONS.LOGIN, payload: { username, sessionId } });
+  }, []);
+
+  const setSession = useCallback((sessionId) => {
+    dispatch({ type: ACTIONS.SET_SESSION, payload: sessionId });
   }, []);
 
   const logout = useCallback(() => {
@@ -397,7 +431,9 @@ export function AppProvider({ children }) {
     validationResults,
     allValidationsPassed,
     maxCredits: studentProfile.maxCreditsPerSemester,
+    academicSessions,
     login,
+    setSession,
     logout,
     addCourse,
     removeCourse,
@@ -412,7 +448,7 @@ export function AppProvider({ children }) {
     showToast,
     dismissToast,
   }), [state, selectedCourseObjects, totalCredits, validationResults, allValidationsPassed,
-    login, logout, addCourse, removeCourse, changeCourseGroup, clearSelectedCourses,
+    login, setSession, logout, addCourse, removeCourse, changeCourseGroup, clearSelectedCourses,
     submitRegistration, approveRegistration, rejectRegistration, resetRegistration,
     approveStudent, rejectStudent, showToast, dismissToast]);
 

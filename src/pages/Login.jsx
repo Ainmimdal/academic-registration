@@ -9,8 +9,9 @@ import PrimaryButton from '../components/common/PrimaryButton';
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [sessionId, setSessionId] = useState('current');
   const [loading, setLoading] = useState(false);
-  const { login, showToast } = useApp();
+  const { academicSessions, login, showToast } = useApp();
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -24,7 +25,7 @@ function Login() {
     
     // Simulate network delay
     setTimeout(() => {
-      login(username);
+      login(username, sessionId);
       
       if (username === 'demo_advisor' || username === 'demo_lecturer') {
         navigate('/lecturer/dashboard');
@@ -84,6 +85,25 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Session / Semester</label>
+            <select
+              className="input-field"
+              value={sessionId}
+              onChange={(e) => setSessionId(e.target.value)}
+              required
+            >
+              {academicSessions.map((session) => (
+                <option key={session.id} value={session.id}>
+                  {session.label}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-gray-500">
+              Select the academic session before entering the registration system.
+            </p>
           </div>
 
           <div className="flex items-center justify-between">

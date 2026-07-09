@@ -15,6 +15,34 @@ export const studentProfile = {
   registeredCourses: [],
 };
 
+// ===== ACADEMIC SESSIONS =====
+export const academicSessions = [
+  {
+    id: 'current',
+    label: 'Current Semester',
+    displayName: 'Current Semester',
+    academicSession: '2024/2025 - Semester 2',
+    semesterLabel: 'Semester 6',
+    semester: 6,
+  },
+  {
+    id: '20263',
+    label: 'Inter Session Semester : 20263',
+    displayName: 'Inter Session Semester',
+    academicSession: '20263',
+    semesterLabel: 'Inter Session',
+    semester: 6,
+  },
+  {
+    id: '202633',
+    label: 'Short Semester : 202633',
+    displayName: 'Short Semester',
+    academicSession: '202633',
+    semesterLabel: 'Short Semester',
+    semester: 6,
+  },
+];
+
 // ===== COURSE CATALOG =====
 export const courseCatalog = [
   {

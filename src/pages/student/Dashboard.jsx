@@ -6,7 +6,7 @@ import StatCard from '../../components/common/StatCard';
 import { useApp } from '../../context/AppContext';
 
 function StudentDashboard() {
-  const { user, registrationPhase } = useApp();
+  const { user, registrationPhase, selectedSession } = useApp();
   const navigate = useNavigate();
   
   const firstName = user?.profile?.name?.split(' ')[0] || 'Student';
@@ -32,7 +32,7 @@ function StudentDashboard() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-1">Welcome, {firstName}!</h1>
           <p className="text-gray-500">{user?.profile?.program}</p>
-          <p className="text-gray-400 text-sm">Semester {user?.profile?.semester}</p>
+          <p className="text-gray-400 text-sm">{selectedSession?.semesterLabel} | {selectedSession?.academicSession}</p>
         </div>
         
         {registrationPhase !== 'draft' && (

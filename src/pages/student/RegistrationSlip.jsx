@@ -4,10 +4,10 @@ import DashboardLayout from '../../layouts/DashboardLayout';
 import UiTMLogo from '../../components/common/UiTMLogo';
 import SecondaryButton from '../../components/common/SecondaryButton';
 import { useApp } from '../../context/AppContext';
-import { getAcademicSession, generateSlipNumber } from '../../utils/helpers';
+import { generateSlipNumber } from '../../utils/helpers';
 
 function RegistrationSlip() {
-  const { user, selectedCourseObjects, totalCredits, showToast } = useApp();
+  const { user, selectedSession, selectedCourseObjects, totalCredits, showToast } = useApp();
   const profile = user?.profile;
   const slipNumber = generateSlipNumber();
 
@@ -48,7 +48,7 @@ function RegistrationSlip() {
             </div>
             <h1 className="text-xl font-bold uppercase tracking-wider mb-1">Universiti Teknologi MARA</h1>
             <h2 className="text-lg font-bold uppercase tracking-widest text-gray-700">Academic Registration Slip</h2>
-            <div className="text-sm mt-2 font-medium">Session: {getAcademicSession()}</div>
+            <div className="text-sm mt-2 font-medium">Session: {selectedSession?.academicSession}</div>
           </div>
 
           {/* Student Info */}
@@ -76,7 +76,7 @@ function RegistrationSlip() {
             <div className="flex">
               <span className="w-32 font-bold">Semester</span>
               <span className="mr-2">:</span>
-              <span className="font-semibold">{profile?.semester}</span>
+              <span className="font-semibold">{selectedSession?.semesterLabel}</span>
             </div>
           </div>
 
