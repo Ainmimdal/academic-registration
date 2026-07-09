@@ -64,6 +64,7 @@ function appReducer(state, action) {
       let role = 'student';
       let profile = { ...studentProfile };
       const selectedSession = academicSessions.find((session) => session.id === sessionId) || academicSessions[0];
+      const sessionChanged = selectedSession.id !== state.selectedSession.id;
 
       if (username === 'demo_advisor' || username === 'demo_lecturer') {
         role = 'lecturer';
@@ -77,10 +78,10 @@ function appReducer(state, action) {
         ...state,
         selectedSession,
         user: { username, role, profile: { ...profile, semester: selectedSession.semester } },
-        courses: JSON.parse(JSON.stringify(initialCourses)),
-        selectedCourses: [],
-        selectedCourseGroups: {},
-        registrationPhase: 'draft',
+        courses: sessionChanged ? JSON.parse(JSON.stringify(initialCourses)) : state.courses,
+        selectedCourses: sessionChanged ? [] : state.selectedCourses,
+        selectedCourseGroups: sessionChanged ? {} : state.selectedCourseGroups,
+        registrationPhase: sessionChanged ? 'draft' : state.registrationPhase,
       };
     }
 
@@ -103,9 +104,6 @@ function appReducer(state, action) {
       return {
         ...state,
         user: null,
-        selectedCourses: [],
-        selectedCourseGroups: {},
-        registrationPhase: 'draft',
       };
 
     case ACTIONS.ADD_COURSE: {
