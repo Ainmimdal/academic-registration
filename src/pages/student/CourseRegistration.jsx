@@ -19,8 +19,8 @@ function CourseRegistration() {
 
   return (
     <DashboardLayout pageTitle="Course Registration">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-4">
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-6">
+        <div className="min-w-0 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold text-gray-800">Available Courses</h2>
@@ -35,7 +35,7 @@ function CourseRegistration() {
           />
         </div>
         
-        <div className="lg:col-span-1">
+        <div className="min-w-0">
           <CourseSummaryPanel />
         </div>
       </div>

@@ -41,7 +41,16 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
 
       <div className="bg-white rounded-xl shadow-sm border border-uitm-card-border overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full min-w-[1120px] text-left border-collapse">
+            <colgroup>
+              <col className="w-[9%]" />
+              <col className="w-[22%]" />
+              <col className="w-[7%]" />
+              <col className="w-[26%]" />
+              <col className="w-[20%]" />
+              <col className="w-[8%]" />
+              <col className="w-[8%]" />
+            </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
                 <th className="table-header">Code</th>
@@ -78,7 +87,7 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                       <td className="table-cell text-center">{course.credits}</td>
                       <td className="table-cell" onClick={(e) => e.stopPropagation()}>
                         <select
-                          className="w-44 rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs text-gray-700 focus:border-uitm-primary focus:outline-none focus:ring-2 focus:ring-uitm-primary/20"
+                          className="w-full min-w-[260px] rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-uitm-primary focus:outline-none focus:ring-2 focus:ring-uitm-primary/20"
                           value={selectedGroupId || ''}
                           disabled={isSelected}
                           onChange={(e) => setSelectedGroups((current) => ({
@@ -88,10 +97,16 @@ function CourseDataTable({ courses, onRegister, onViewDetails, selectedCourses }
                         >
                           {(course.classGroups || []).map((group) => (
                             <option key={group.id} value={group.id} disabled={group.availableSeats === 0}>
-                              {group.label} - {group.day} {group.startTime} ({group.availableSeats}/{group.totalSeats})
+                              {group.label} - {group.day}, {group.startTime}-{group.endTime}
                             </option>
                           ))}
                         </select>
+                        {selectedGroup && (
+                          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+                            <span>{selectedGroup.venue}</span>
+                            <span>{selectedGroup.availableSeats}/{selectedGroup.totalSeats} seats</span>
+                          </div>
+                        )}
                       </td>
                       <td className="table-cell text-gray-600">{course.lecturer}</td>
                       <td className="table-cell text-center">

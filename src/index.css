@@ -50,7 +50,7 @@ body {
   }
 
   .page-container {
-    @apply p-6 max-w-7xl mx-auto;
+    @apply w-full p-6 max-w-[1440px] mx-auto;
   }
 
   .card {
