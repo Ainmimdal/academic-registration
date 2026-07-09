@@ -100,7 +100,7 @@ function RegistrationSlip() {
                       <td className="p-2 border-r border-gray-400 text-center">{index + 1}</td>
                       <td className="p-2 border-r border-gray-400 font-semibold">{course.code}</td>
                       <td className="p-2 border-r border-gray-400 uppercase">{course.name}</td>
-                      <td className="p-2 border-r border-gray-400">{course.selectedGroup?.label || '-'}</td>
+                      <td className="p-2 border-r border-gray-400">{course.selectedGroupDisplayLabel || '-'}</td>
                       <td className="p-2 text-center">{course.credits}</td>
                     </tr>
                   ))

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import PrimaryButton from '../common/PrimaryButton';
+import { formatClassGroupLabel } from '../../utils/helpers';
 
 function CourseSummaryPanel() {
   const {
@@ -9,6 +10,8 @@ function CourseSummaryPanel() {
     totalCredits,
     maxCredits,
     registrationPhase,
+    selectedSession,
+    user,
     removeCourse,
     changeCourseGroup,
     clearSelectedCourses,
@@ -48,9 +51,12 @@ function CourseSummaryPanel() {
               <li key={course.id} className="p-3 rounded-lg bg-gray-50 border border-gray-100 hover:border-uitm-primary/30 transition-colors group">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="font-semibold text-uitm-primary text-sm">{course.code}</span>
                       <span className="text-xs bg-purple-100 text-uitm-primary px-1.5 py-0.5 rounded">{course.credits} Cr</span>
+                      <span className="text-xs bg-white border border-uitm-primary/20 text-uitm-primary px-1.5 py-0.5 rounded">
+                        {course.selectedGroupDisplayLabel}
+                      </span>
                     </div>
                     <p className="text-xs text-gray-600 line-clamp-1 mt-1">{course.name}</p>
                     <p className="text-xs text-gray-500 mt-1">
@@ -82,10 +88,13 @@ function CourseSummaryPanel() {
                         value={group.id}
                         disabled={group.availableSeats === 0 && group.id !== course.selectedGroupId}
                       >
-                        {group.label} - {group.day} {group.startTime} ({group.availableSeats}/{group.totalSeats})
+                        {formatClassGroupLabel(group, user?.profile?.program, selectedSession?.semester)}
                       </option>
                     ))}
                   </select>
+                  <span className="mt-1 block text-xs text-gray-500">
+                    {course.selectedGroup?.venue} | {course.selectedGroup?.availableSeats}/{course.selectedGroup?.totalSeats} seats
+                  </span>
                 </label>
               </li>
             ))}

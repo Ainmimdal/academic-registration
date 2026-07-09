@@ -27,6 +27,26 @@ export function checkSeatAvailability(course) {
 }
 
 /**
+ * Extract the programme code from labels like "CS230 - Bachelor of Computer Science".
+ */
+export function getProgramCode(program = '') {
+  const match = program.match(/[A-Z]{2,}\d+/);
+  return match?.[0] || 'CS230';
+}
+
+/**
+ * Format class group according to programme + semester + class letter.
+ * Example: CS230 + 6 + A -> CS2306A.
+ */
+export function formatClassGroupLabel(group, program, semester) {
+  const programCode = getProgramCode(program);
+  const semesterNumber = String(semester || '').match(/\d+/)?.[0] || '6';
+  const letter = (group?.id || group?.label || '').match(/[A-Z]$/)?.[0] || 'A';
+
+  return `${programCode}${semesterNumber}${letter}`;
+}
+
+/**
  * Format 24h time string to 12h format
  */
 export function formatTime(time) {

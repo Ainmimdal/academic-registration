@@ -6,11 +6,12 @@ import PrimaryButton from '../../components/common/PrimaryButton';
 import SecondaryButton from '../../components/common/SecondaryButton';
 import StatusBadge from '../../components/common/StatusBadge';
 import { useApp } from '../../context/AppContext';
+import { formatClassGroupLabel } from '../../utils/helpers';
 
 function CourseDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { courses, selectedCourses, selectedCourseGroups, addCourse, removeCourse, changeCourseGroup } = useApp();
+  const { courses, selectedCourses, selectedCourseGroups, selectedSession, user, addCourse, removeCourse, changeCourseGroup } = useApp();
   const [draftGroupId, setDraftGroupId] = useState('');
   
   const course = courses.find((c) => c.id === id);
@@ -145,10 +146,15 @@ function CourseDetails() {
                       value={group.id}
                       disabled={group.availableSeats === 0 && group.id !== activeGroupId}
                     >
-                      {group.label} - {group.day} {group.startTime} ({group.availableSeats}/{group.totalSeats})
+                      {formatClassGroupLabel(group, user?.profile?.program, selectedSession?.semester)}
                     </option>
                   ))}
                 </select>
+                {activeGroup && (
+                  <p className="mt-2 text-xs text-gray-500">
+                    {activeGroup.day} {activeGroup.startTime}-{activeGroup.endTime} | {activeGroup.venue} | {activeGroup.availableSeats}/{activeGroup.totalSeats} seats
+                  </p>
+                )}
               </div>
 
               <div>

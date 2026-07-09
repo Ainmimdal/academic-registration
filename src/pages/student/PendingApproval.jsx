@@ -81,7 +81,7 @@ function PendingApproval() {
                     <div>
                       <p className="text-sm font-semibold text-gray-800">{course.code} - {course.name}</p>
                       <p className="text-xs text-gray-500">
-                        {course.selectedGroup?.label} | {course.day} {course.startTime}-{course.endTime}
+                        {course.selectedGroupDisplayLabel} | {course.day} {course.startTime}-{course.endTime}
                       </p>
                     </div>
                     <StatusBadge status={registrationPhase} />

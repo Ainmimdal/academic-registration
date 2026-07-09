@@ -7,7 +7,7 @@ import {
   adminProfile,
   pendingStudents as initialPendingStudents,
 } from '../data/mockData';
-import { calculateTotalCredits, checkPrerequisites, checkSeatAvailability } from '../utils/helpers';
+import { calculateTotalCredits, checkPrerequisites, checkSeatAvailability, formatClassGroupLabel } from '../utils/helpers';
 
 const AppContext = createContext(null);
 
@@ -186,7 +186,8 @@ function appReducer(state, action) {
       const requestedCourses = state.selectedCourses.map((courseId) => {
         const course = state.courses.find((item) => item.id === courseId);
         const group = course?.classGroups?.find((item) => item.id === state.selectedCourseGroups[courseId]);
-        return group ? `${course.code} (${group.label})` : course?.code;
+        const groupLabel = formatClassGroupLabel(group, state.user?.profile?.program || studentProfile.program, state.selectedSession?.semester || studentProfile.semester);
+        return group ? `${course.code} (${groupLabel})` : course?.code;
       }).filter(Boolean);
 
       const updatedStudents = state.pendingStudents.map((student) =>
@@ -356,11 +357,17 @@ export function AppProvider({ children }) {
 
       const selectedGroupId = state.selectedCourseGroups[id] || course.classGroups?.[0]?.id;
       const selectedGroup = course.classGroups?.find((group) => group.id === selectedGroupId);
+      const selectedGroupDisplayLabel = formatClassGroupLabel(
+        selectedGroup,
+        state.user?.profile?.program || studentProfile.program,
+        state.selectedSession?.semester || studentProfile.semester
+      );
 
       return {
         ...course,
         selectedGroup,
         selectedGroupId,
+        selectedGroupDisplayLabel,
         day: selectedGroup?.day || course.day,
         startTime: selectedGroup?.startTime || course.startTime,
         endTime: selectedGroup?.endTime || course.endTime,
