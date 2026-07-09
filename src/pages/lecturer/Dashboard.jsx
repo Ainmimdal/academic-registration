@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import ApprovalCard from '../../components/specific/ApprovalCard';
 import StatCard from '../../components/common/StatCard';
 import { useApp } from '../../context/AppContext';
-import { pendingStudents as initialPendingStudents } from '../../data/mockData';
 
 function LecturerDashboard() {
-  const { user, showToast } = useApp();
-  const [students, setStudents] = useState(initialPendingStudents);
+  const { user, pendingStudents: students, approveStudent, rejectStudent, showToast } = useApp();
 
   const pendingStudents = students.filter(s => s.status === 'pending');
   const approvedStudents = students.filter(s => s.status === 'approved');
   const rejectedStudents = students.filter(s => s.status === 'rejected');
 
   const handleApprove = (id) => {
-    setStudents(students.map(s => s.id === id ? { ...s, status: 'approved' } : s));
+    approveStudent(id);
     showToast('Registration approved successfully.', 'success');
   };
 
   const handleReject = (id) => {
-    setStudents(students.map(s => s.id === id ? { ...s, status: 'rejected' } : s));
+    rejectStudent(id);
     showToast('Registration rejected.', 'warning');
   };
 
